@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Quick Mail — Minimal</title>
-  <meta name="description" content="Simple email form for campaign outreach">
+  <title>Asia Cup Campaign — India Ki Awaaz</title>
+  <meta name="description" content="Send messages to officials regarding cricket diplomacy and sports relations">
   <meta name="referrer" content="no-referrer" />
-  <link rel="icon" id="favicon" href="assets/favicon.svg">
+  <link rel="icon" id="favicon" href="/assets/favicon.svg">
   <style>
     :root {
       --bg: none;
@@ -72,21 +72,27 @@
     .header {
       display: flex;
       flex-direction: column;
-      gap: 4px;
-      margin-bottom: 20px;
+      gap: 8px;
+      margin-bottom: 24px;
+      text-align: center;
     }
     
-    .brand {
+    .campaign-title {
       font-weight: 700;
-      font-size: 1.4rem;
+      font-size: 1.8rem;
       color: #111;
       letter-spacing: -0.025em;
     }
     
-    .meta {
+    .powered-by {
       color: #64748b;
-      font-size: 0.92rem;
+      font-size: 0.95rem;
       font-weight: 500;
+    }
+    
+    .powered-by span {
+      color: #1e293b;
+      font-weight: 600;
     }
     
     .form {
@@ -214,8 +220,8 @@
         padding: 22px 20px;
       }
       
-      .brand {
-        font-size: 1.25rem;
+      .campaign-title {
+        font-size: 1.5rem;
       }
       
       .btn {
@@ -227,22 +233,22 @@
 </head>
 <body>
   <div class="wrap">
-    <div class="card" role="main" aria-labelledby="title">
+    <div class="card" role="main" aria-labelledby="campaign-title">
       <div class="header">
-        <div id="title" class="brand">Quick Mail</div>
-        <div class="meta">Minimal · Mobile-friendly</div>
+        <h1 id="campaign-title" class="campaign-title">Asia Cup Campaign</h1>
+        <div class="powered-by">Powered by <span>India Ki Awaaz</span></div>
       </div>
 
       <form id="form" onsubmit="onSend(event)" novalidate aria-describedby="desc">
         <div class="form">
           <div class="form-group">
             <label for="name">Your full name</label>
-            <input id="name" name="name" type="text" placeholder="John Doe" required autocomplete="name" />
+            <input id="name" name="name" type="text" placeholder="Narendra Modi" required autocomplete="name" />
           </div>
 
           <div class="form-group">
             <label for="city">City or town</label>
-            <input id="city" name="city" type="text" placeholder="New York" required autocomplete="address-level2" />
+            <input id="city" name="city" type="text" placeholder="Mumbai" required autocomplete="address-level2" />
           </div>
 
           <div class="form-group">
@@ -263,7 +269,10 @@
 
       <div id="desc" class="muted">Opens your default email client with pre-filled message</div>
       <footer>
-        Campaign configuration loaded from config.json
+        <a href="https://indiakiawaaz.github.io" style="color: #475569; text-decoration: none; transition: color 0.2s; display: inline-block; margin-top: 4px;">
+          <span style="border-bottom: 1px solid #cbd5e1;">India Ki Awaaz</span>
+        </a>
+        <div style="margin-top: 4px;">Citizen-powered campaigns to make your voice heard</div>
       </footer>
     </div>
   </div>
@@ -272,10 +281,10 @@
 /* Minimal, robust config loader for per-project background images */
 const FALLBACK = {
   recipients: ["recipient@example.com"],
-  subjects: ["Hello — {{name}} from {{city}} ({{pincode}})"],
-  bodies: ["Hi,\n\nI am {{name}} from {{city}} (PIN: {{pincode}}). I support this cause.\n\nRegards,\n{{name}}"],
-  background: "",            // set to "assets/bg.webp" inside project folder
-  favicon: "assets/favicon.svg",  // Default favicon path
+  subjects: ["Cricket Diplomacy Support — {{name}} from {{city}} ({{pincode}})"],
+  bodies: ["Dear Sir/Madam,\n\nI am {{name}} from {{city}} (PIN: {{pincode}}). I strongly support cricket diplomacy between India and Pakistan as it fosters peace and strengthens people-to-people connections through the sport we all love.\n\nAs citizens, we believe sports should transcend political differences and serve as a bridge for dialogue and understanding.\n\nThank you for your attention to this important matter.\n\nSincerely,\n{{name}}"],
+  background: "bg.webp",            // Place bg.webp directly in the same folder as this HTML file
+  favicon: "/assets/favicon.svg",   // Absolute path to main repo's favicon
   overlayOpacity: 0.32,
   recipientsPerMail: 1,
   truncateBodyTo: 12000,
@@ -314,6 +323,7 @@ function applyVisuals(){
   const overlay = (CONFIG && typeof CONFIG.overlayOpacity === 'number') ? Math.max(0, Math.min(0.9, CONFIG.overlayOpacity)) : FALLBACK.overlayOpacity;
   document.documentElement.style.setProperty('--overlay', `rgba(0,0,0,${overlay})`);
   if (bg) {
+    // Background image is in the same folder as the HTML file
     document.documentElement.style.setProperty('--bg', `url("${bg.replace(/"/g,'')}")`);
   } else {
     document.documentElement.style.setProperty('--bg', 'none');
