@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Quick Mail — Minimal</title>
+  <meta name="description" content="Simple email form for campaign outreach">
+  <meta name="referrer" content="no-referrer" />
+  <link rel="icon" id="favicon" href="assets/favicon.svg">
+  <style>
+    :root {
+      --bg: none;
+      --overlay: rgba(0,0,0,0.32);
+      --card-bg: rgba(255,255,255,0.96);
+      --accent: #0d6efd;
+      --accent-hover: #0b5ed7;
+      --radius: 16px;
+      --max-width: 520px;
+      --gap: 16px;
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.07), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    :focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.3);
+    }
+    
+    html, body {
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg) center/cover no-repeat fixed;
+      color: #1a1c1e;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: var(--overlay);
+      pointer-events: none;
+    }
+    
+    .wrap {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    
+    .card {
+      width: 100%;
+      max-width: var(--max-width);
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      padding: 28px;
+      z-index: 1;
+    }
+    
+    .header {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 20px;
+    }
+    
+    .brand {
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: #111;
+      letter-spacing: -0.025em;
+    }
+    
+    .meta {
+      color: #64748b;
+      font-size: 0.92rem;
+      font-weight: 500;
+    }
+    
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: var(--gap);
+    }
+    
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    
+    label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #475569;
+      padding-left: 4px;
+    }
+    
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      font-size: 1rem;
+      outline: none;
+      transition: var(--transition);
+      background-color: #f8fafc;
+      color: #1e293b;
+    }
+    
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+      background-color: white;
+    }
+    
+    .btn {
+      padding: 12px 16px;
+      font-weight: 600;
+      font-size: 1rem;
+      border-radius: 12px;
+      border: 0;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      letter-spacing: -0.015em;
+      text-transform: none;
+      background: var(--accent);
+      color: white;
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .btn.send {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn.send::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.2) 100%);
+      transform: translateX(-100%);
+      transition: transform 0.5s;
+      z-index: 0;
+    }
+    
+    .btn.send:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .btn.send:hover::after {
+      transform: translateX(100%);
+    }
+    
+    .btn.send:active {
+      transform: translateY(0);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+      background: var(--accent);
+    }
+    
+    .muted {
+      color: #64748b;
+      font-size: 0.82rem;
+      margin-top: 6px;
+      text-align: center;
+      font-weight: 500;
+    }
+    
+    footer {
+      margin-top: 24px;
+      font-size: 0.78rem;
+      color: #94a3b8;
+      text-align: center;
+      padding-top: 16px;
+      border-top: 1px solid rgba(0,0,0,0.05);
+    }
+    
+    .error {
+      color: #dc2626;
+      font-size: 0.82rem;
+      padding-left: 4px;
+      font-weight: 500;
+    }
+    
+    @media (max-width: 420px) {
+      .card {
+        padding: 22px 20px;
+      }
+      
+      .brand {
+        font-size: 1.25rem;
+      }
+      
+      .btn {
+        padding: 11px 14px;
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" role="main" aria-labelledby="title">
+      <div class="header">
+        <div id="title" class="brand">Quick Mail</div>
+        <div class="meta">Minimal · Mobile-friendly</div>
+      </div>
+
+      <form id="form" onsubmit="onSend(event)" novalidate aria-describedby="desc">
+        <div class="form">
+          <div class="form-group">
+            <label for="name">Your full name</label>
+            <input id="name" name="name" type="text" placeholder="John Doe" required autocomplete="name" />
+          </div>
+
+          <div class="form-group">
+            <label for="city">City or town</label>
+            <input id="city" name="city" type="text" placeholder="New York" required autocomplete="address-level2" />
+          </div>
+
+          <div class="form-group">
+            <label for="pincode">6-digit pincode</label>
+            <input id="pincode" name="pincode" type="text" inputmode="numeric" maxlength="6" 
+                   placeholder="100001" required pattern="\d{6}" 
+                   title="Please enter exactly 6 digits" />
+          </div>
+
+          <button id="sendBtn" class="btn send" type="submit">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 11.67l-8.173 5.109a2 2 0 01-2.09 0L3 11.67m18-3.34v8.002c0 1.105-.895 2-2 2H5c-1.105 0-2-.895-2-2v-8.002c0-1.105.895-2 2-2h14c1.105 0 2 .895 2 2z" />
+            </svg>
+            Send Message
+          </button>
+        </div>
+      </form>
+
+      <div id="desc" class="muted">Opens your default email client with pre-filled message</div>
+      <footer>
+        Campaign configuration loaded from config.json
+      </footer>
+    </div>
+  </div>
+
+<script>
+/* Minimal, robust config loader for per-project background images */
+const FALLBACK = {
+  recipients: ["recipient@example.com"],
+  subjects: ["Hello — {{name}} from {{city}} ({{pincode}})"],
+  bodies: ["Hi,\n\nI am {{name}} from {{city}} (PIN: {{pincode}}). I support this cause.\n\nRegards,\n{{name}}"],
+  background: "",            // set to "assets/bg.webp" inside project folder
+  favicon: "assets/favicon.svg",  // Default favicon path
+  overlayOpacity: 0.32,
+  recipientsPerMail: 1,
+  truncateBodyTo: 12000,
+  allowCC: false,
+  cc: [],
+  bcc: []
+};
+
+let CONFIG = null;
+
+async function loadConfig(timeoutMs = 2500) {
+  try {
+    const controller = new AbortController();
+    const t = setTimeout(()=> controller.abort(), timeoutMs);
+    const res = await fetch('./config.json', { signal: controller.signal, cache: 'no-cache' });
+    clearTimeout(t);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const json = await res.json();
+    CONFIG = Object.assign({}, FALLBACK, json || {});
+    CONFIG.recipients = Array.isArray(CONFIG.recipients) ? CONFIG.recipients : (typeof CONFIG.recipients === 'string' ? [CONFIG.recipients] : []);
+    CONFIG.subjects = Array.isArray(CONFIG.subjects) ? CONFIG.subjects : [];
+    CONFIG.bodies = Array.isArray(CONFIG.bodies) ? CONFIG.bodies : [];
+    if (!CONFIG.recipients.length) CONFIG.recipients = FALLBACK.recipients;
+    if (!CONFIG.subjects.length) CONFIG.subjects = FALLBACK.subjects;
+    if (!CONFIG.bodies.length) CONFIG.bodies = FALLBACK.bodies;
+  } catch (err) {
+    console.warn('Using fallback config (config.json not loaded):', err);
+    CONFIG = Object.assign({}, FALLBACK);
+  }
+  applyVisuals();
+  applyFavicon();
+}
+
+function applyVisuals(){
+  const bg = CONFIG && CONFIG.background ? CONFIG.background.trim() : "";
+  const overlay = (CONFIG && typeof CONFIG.overlayOpacity === 'number') ? Math.max(0, Math.min(0.9, CONFIG.overlayOpacity)) : FALLBACK.overlayOpacity;
+  document.documentElement.style.setProperty('--overlay', `rgba(0,0,0,${overlay})`);
+  if (bg) {
+    document.documentElement.style.setProperty('--bg', `url("${bg.replace(/"/g,'')}")`);
+  } else {
+    document.documentElement.style.setProperty('--bg', 'none');
+  }
+}
+
+function applyFavicon() {
+  const favicon = document.getElementById('favicon');
+  if (CONFIG && CONFIG.favicon) {
+    favicon.href = CONFIG.favicon;
+  }
+}
+
+function rIndex(len){
+  if (len <= 0) return 0;
+  if (window.crypto && crypto.getRandomValues){
+    const v = crypto.getRandomValues(new Uint32Array(1))[0];
+    return v % len;
+  }
+  return Math.floor(Math.random() * len);
+}
+
+function pickN(arr, n){
+  const result = [];
+  if (!Array.isArray(arr) || arr.length === 0) return result;
+  const used = new Set();
+  const count = Math.min(arr.length, Math.max(1, n));
+  while (result.length < count) {
+    const i = rIndex(arr.length);
+    if (!used.has(i)) { used.add(i); result.push(arr[i]); }
+  }
+  return result;
+}
+
+function fill(tpl, data){
+  return String(tpl).replace(/{{\s*(name|city|pincode)\s*}}/ig, (_, k) => (data[k] || ''));
+}
+
+function validPin(pin){ return /^\d{6}$/.test(pin); }
+
+function safeEncode(s){ return encodeURIComponent(s); }
+
+function buildMailto(toList, subject, body, ccList = [], bccList = []){
+  const to = toList.map(x => x.trim()).join(',');
+  const params = [];
+  if (subject) params.push('subject=' + safeEncode(subject));
+  if (body) params.push('body=' + safeEncode(body));
+  if (ccList && ccList.length) params.push('cc=' + safeEncode(ccList.join(',')));
+  if (bccList && bccList.length) params.push('bcc=' + safeEncode(bccList.join(',')));
+  return 'mailto:' + encodeURIComponent(to) + (params.length ? '?' + params.join('&') : '');
+}
+
+async function onSend(e){
+  e && e.preventDefault();
+  const btn = document.getElementById('sendBtn');
+  
+  if (!CONFIG) await loadConfig();
+  
+  const name = (document.getElementById('name').value || '').trim();
+  const city = (document.getElementById('city').value || '').trim();
+  const pincode = (document.getElementById('pincode').value || '').trim();
+  
+  // Clear previous errors
+  document.querySelectorAll('.error').forEach(el => el.remove());
+  
+  // Validate inputs
+  let isValid = true;
+  if (!name) {
+    addError('name', 'Full name required');
+    isValid = false;
+  }
+  if (!city) {
+    addError('city', 'City name required');
+    isValid = false;
+  }
+  if (!pincode) {
+    addError('pincode', 'Pincode required');
+    isValid = false;
+  } else if (!validPin(pincode)) {
+    addError('pincode', '6 digits only');
+    isValid = false;
+  }
+  
+  if (!isValid) return;
+  
+  btn.disabled = true;
+  const originalHTML = btn.innerHTML;
+  btn.innerHTML = '<svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-75" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle></svg>';
+  
+  try {
+    const perMail = Math.max(1, Math.min(CONFIG.recipients.length, Number(CONFIG.recipientsPerMail || 1)));
+    const chosen = pickN(CONFIG.recipients, perMail);
+    
+    const subjTpl = CONFIG.subjects[rIndex(CONFIG.subjects.length)];
+    const bodyTpl = CONFIG.bodies[rIndex(CONFIG.bodies.length)];
+    
+    const data = { name, city, pincode };
+    let subject = fill(subjTpl, data);
+    let body = fill(bodyTpl, data);
+    
+    const max = Math.max(500, Number(CONFIG.truncateBodyTo || FALLBACK.truncateBodyTo));
+    if (body.length > max) body = body.slice(0, max - 3) + '...';
+    
+    const ccList = (CONFIG.allowCC && Array.isArray(CONFIG.cc)) ? CONFIG.cc : [];
+    const bccList = Array.isArray(CONFIG.bcc) ? CONFIG.bcc : [];
+    
+    const mailto = buildMailto(chosen, subject, body, ccList, bccList);
+    
+    // Simulate network delay for better UX
+    await new Promise(resolve => setTimeout(resolve, 300));
+    window.location.href = mailto;
+  } catch (err) {
+    console.error('Mailto generation failed:', err);
+    btn.disabled = false;
+    btn.innerHTML = originalHTML;
+    alert('Failed to generate email. Please check your inputs and try again.');
+  }
+}
+
+function addError(fieldId, message) {
+  const input = document.getElementById(fieldId);
+  const error = document.createElement('div');
+  error.className = 'error';
+  error.textContent = message;
+  input.parentNode.appendChild(error);
+  input.style.borderColor = '#fecaca';
+  input.style.backgroundColor = '#fffbeb';
+}
+
+(async function init(){ 
+  await loadConfig(); 
+  document.getElementById('name').focus(); 
+})();
+</script>
+</body>
+</html>
