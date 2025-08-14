@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>India Ki Awaaz - Campaign Hub</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card-bg: white;
+      --accent: #0d6efd;
+      --text: #1e293b;
+      --text-secondary: #64748b;
+      --border: #e2e8f0;
+      --radius: 12px;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --transition: all 0.2s ease;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--text);
+      background-color: var(--bg);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding-top: 20px;
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+      color: #111;
+    }
+    
+    .tagline {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .campaigns {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+    }
+    
+    .campaign-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      border: 1px solid var(--border);
+    }
+    
+    .campaign-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      border-color: var(--accent);
+    }
+    
+    .campaign-content {
+      padding: 24px;
+    }
+    
+    .campaign-title {
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+      color: #111;
+    }
+    
+    .campaign-desc {
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+      font-size: 0.95rem;
+    }
+    
+    .campaign-link {
+      display: inline-block;
+      padding: 8px 16px;
+      background: var(--accent);
+      color: white;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+    
+    .campaign-link:hover {
+      opacity: 0.9;
+    }
+    
+    footer {
+      text-align: center;
+      margin-top: 60px;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      padding-bottom: 20px;
+    }
+    
+    @media (max-width: 600px) {
+      .campaigns {
+        grid-template-columns: 1fr;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>India Ki Awaaz</h1>
+      <p class="tagline">Join our citizen-powered campaigns to make your voice heard</p>
+    </header>
+    
+    <div class="campaigns">
+      <div class="campaign-card">
+        <div class="campaign-content">
+          <h2 class="campaign-title">Asia Cup Campaign</h2>
+          <p class="campaign-desc">Send messages to officials regarding cricket diplomacy and sports relations</p>
+          <a href="Asiacup/" class="campaign-link">Join Campaign</a>
+        </div>
+      </div>
+      
+      <!-- Add more campaigns as needed -->
+      <!--
+      <div class="campaign-card">
+        <div class="campaign-content">
+          <h2 class="campaign-title">Environmental Initiative</h2>
+          <p class="campaign-desc">Campaign for cleaner air and sustainable policies in major cities</p>
+          <a href="environment/" class="campaign-link">Join Campaign</a>
+        </div>
+      </div>
+      -->
+    </div>
+    
+    <footer>
+      <p>A citizen-powered initiative started on 15 August 2025 to amplify Indian voices on important issues</p>
+    </footer>
+  </div>
+</body>
+</html>
